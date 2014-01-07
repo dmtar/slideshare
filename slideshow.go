@@ -1,9 +1,5 @@
 package slideshare
 
-import (
-	"fmt"
-)
-
 type Tags struct {
 	Tags []Tag `xml:"Tags"`
 }

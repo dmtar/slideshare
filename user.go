@@ -1,9 +1,5 @@
 package slideshare
 
-import (
-	"fmt"
-)
-
 type UserFavorites struct {
 	Favorites []UserFavorite `xml:"favorites"`
 }

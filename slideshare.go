@@ -1,9 +1,5 @@
 package slideshare
 
-import (
-	"fmt"
-)
-
 const (
 	APIURL = "https://www.slideshare.net/api/2/"
 )

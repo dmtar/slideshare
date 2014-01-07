@@ -1,9 +1,5 @@
 package slideshare
 
-import (
-	"fmt"
-)
-
 type Favorite struct {
 	XMLName     xml.Name `xml:"Slideshow"`
 	SlideshowID uint64   `xml:"SlideshowID"`
