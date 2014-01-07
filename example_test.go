@@ -2,7 +2,7 @@ package slideshare
 
 import (
 	"fmt"
-	"github.com/dishev/go-slideshare"
+	"github.com/dmtar/go-slideshare"
 )
 
 // You have to get API_KEY & SHARED_SECRET from Slideshare
