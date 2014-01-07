@@ -9,7 +9,7 @@ Installation
 
 When everything is ready, package installation should be done via command bellow: 
 
-`go get github.com/dishev/go-slideshare`
+`go get github.com/dmtar/go-slideshare`
 
 Examples
 --------
