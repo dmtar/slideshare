@@ -1,4 +1,4 @@
-go-slideshare
+slideshare
 =============
 
 API wrapper for SlideShare written in Go.
@@ -9,7 +9,7 @@ Installation
 
 When everything is ready, package installation should be done via command bellow: 
 
-`go get github.com/dmtar/go-slideshare`
+`go get github.com/dmtar/slideshare`
 
 Examples
 --------
@@ -18,7 +18,7 @@ Examples
 
     import (
         "fmt"
-        "github.com/dishev/go-slideshare"
+        "github.com/dishev/slideshare"
     )
 
     func main() {
