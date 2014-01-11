@@ -1,20 +1,33 @@
 package slideshare
 
+// Tags keeps an array with Tag IDs.
 type Tags struct {
 	Tags []Tag `xml:"Tags"`
 }
+
+// Tag type keeps tag IDs.
 type Tag struct {
 	ID uint64 `xml:"Tag"`
 }
+
+// RelatedSlideshowIDs ... holds an array with related slideshow IDs.
 type RelatedSlideshowIDs struct {
 	RelatedSlideshowIDs []RelatedSlideshowID
 }
+
+// RelatedSlideshowID holds info about the ID for a related slideshow.
 type RelatedSlideshowID struct {
 	ID uint64 `xml:"RelatedSlideshowID"`
 }
+
+// Slideshows type holds ... an array with Slideshows.
 type Slideshows struct {
 	Slideshows []Slideshow
 }
+
+// Slideshow type, which holds all the information about a slideshow
+// properties bellow InContest are detailed, they will have reliabe information
+// if detailed flag is set to true.
 type Slideshow struct {
 	XMLName           xml.Name            `xml:"Slideshow"`
 	ID                uint64              `xml:"ID"`
@@ -54,7 +67,17 @@ type Slideshow struct {
 	ShareWithContacs  bool                `xml:"ShareWithContacs"`
 }
 
-func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error)                       {}
+// GetSlideshow returns information about a slideshow, parameters:
+// id int which holds the slideshow id, required.
+// detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
+// return: Slideshow instance.
+func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {}
+
+// GetSlideshowsByTag returns returns a Slideshows object:
+// tag string required, holds the tag name.
+// limit int optional, specify number of items to return.
+// detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
+// return: Slideshows instance.
 func (s *Service) GetSlideshowsByTag(tag string, limit int, detailed bool) (Slideshows, error) {}
 func (s *Service) GetSlideshowsByGroup(groupName string, detailed bool) (Slideshows, error)    {}
 func (s *Service) GetSlideshowsByUser(userName string, detailed bool) (Slideshows, error)      {}

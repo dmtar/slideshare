@@ -1,16 +1,24 @@
 package slideshare
 
+// UserFavorites keeps an array with favorited slideshows by a user.
 type UserFavorites struct {
 	Favorites []UserFavorite `xml:"favorites"`
 }
+
+// UserFavorite keeps information about a favorited slideshow by a user.
 type UserFavorite struct {
 	XMLName     xml.Name `xml:"favorite"`
 	SlideshowID uint64   `xml:"slideshow_id"`
 	TagText     string   `xml:"tag_text"`
 }
+
+// Contacts holds an array with all Contacts for a given user.
 type Contacts struct {
 	Contacts []Contact `xml:"Contacts"`
 }
+
+// Contact holds info like username, number of uploaded slideshows
+// number of comments of a Contact for a given user.
 type Contact struct {
 	XMLName       xml.Name `xml:"Contact"`
 	Username      string   `xml:"Username"`
