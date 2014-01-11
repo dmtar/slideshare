@@ -38,7 +38,19 @@ type Group struct {
 	Url           string `xml:"url"`
 }
 
-func getUserFavorites(username string) (UserFavorites, error)
-func getUserContacts(username string, limit uint32) (Contacts, error)
-func getUserGroups(username string) (Groups, error)
+// Returns user favorites
+// username_for required, username of user whose favorites are being requested.
+func getUserFavorites(username_for string) (UserFavorites, error)
+
+// Returns user contacts
+// username_for required, username of user whose contacts are being requested
+func getUserContacts(username_for string, limit uint32) (Contacts, error)
+
+// Returns user groups
+// username_for required, username of user whose groups are being requested
+func getUserGroups(username_for string) (Groups, error)
+
+// Returns user tags
+// username required, username of user whose tags are being requested
+// password required, password of user whose tags are being requested
 func getUserTags(username string, password string) (Tags, error)
