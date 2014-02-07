@@ -1,7 +1,6 @@
 package slideshare
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -10,20 +9,47 @@ const (
 	SharedSecret = "X1lMfjPo"
 )
 
+// Test basic getting of slideshow
 func TestGetSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
 	slideshow, err := service.GetSlideshow(29905515, false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(slideshow.ID)
-	fmt.Println(slideshow.Title)
-	fmt.Println(slideshow.Description)
-	fmt.Println(slideshow.Username)
-	fmt.Println(slideshow.Status)
-	fmt.Println(slideshow.Url)
-	fmt.Println(slideshow.Created)
-	fmt.Println(slideshow.NumDownloads)
-	fmt.Println(slideshow.NumComments)
-	fmt.Println(slideshow.NumSlides)
+	if slideshow.ID != 29905515 {
+		t.Fail()
+	}
+	if slideshow.Title != "Databases some other lecture" {
+		t.Fail()
+	}
+	if slideshow.Username != "ddishev" {
+		t.Fail()
+	}
+}
+
+// Test getting a slideshow with detailed info
+func TestGetSlideshowDetailed(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	slideshow, err := service.GetSlideshow(29905515, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if slideshow.ID != 29905515 {
+		t.Fail()
+	}
+	if slideshow.Title != "Databases some other lecture" {
+		t.Fail()
+	}
+	if slideshow.Username != "ddishev" {
+		t.Fail()
+	}
+	if slideshow.NumSlides != 65 {
+		t.Fail()
+	}
+	if slideshow.Tags[0] != "fmi" {
+		t.Fail()
+	}
+	if slideshow.RelatedSlideshows[0] != 9551082 {
+		t.Fail()
+	}
 }

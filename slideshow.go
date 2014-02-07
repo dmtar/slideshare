@@ -12,26 +12,6 @@ import (
 	"time"
 )
 
-// Tags keeps an array with Tag IDs.
-type Tags struct {
-	Tags []Tag `xml:"Tags"`
-}
-
-// Tag type keeps tag IDs.
-type Tag struct {
-	ID uint64 `xml:"Tag"`
-}
-
-// RelatedSlideshowIDs ... holds an array with related slideshow IDs.
-type RelatedSlideshowIDs struct {
-	RelatedSlideshowIDs []RelatedSlideshowID
-}
-
-// RelatedSlideshowID holds info about the ID for a related slideshow.
-type RelatedSlideshowID struct {
-	ID uint64 `xml:"RelatedSlideshowID"`
-}
-
 // Slideshows type holds ... an array with Slideshows.
 type Slideshows struct {
 	Slideshows []Slideshow
@@ -47,42 +27,42 @@ type SlideShowDeleteted struct {
 // properties bellow InContest are detailed, they will have reliabe information
 // if detailed flag is set to true.
 type Slideshow struct {
-	XMLName           xml.Name            `xml:"Slideshow"`
-	ID                uint64              `xml:"ID"`
-	Title             string              `xml:"Title"`
-	Description       string              `xml:"Description"`
-	Username          string              `xml:"Username"`
-	Status            uint8               `xml:"Status"`
-	Url               string              `xml:"URL"`
-	ThumbnailUrl      string              `xml:"ThumbnailURL"`
-	ThumbnailSize     string              `xml:"ThumbnailSize"`
-	ThumbnailSmallUrl string              `xml:"ThumbnailSmallURL"`
-	Embed             string              `xml:"Embed"`
-	Created           string              `xml:"Created"`
-	Updated           string              `xml:"Updated"`
-	Language          string              `xml:"Language"`
-	Format            string              `xml:"Format"`
-	Download          bool                `xml:"Download"`
-	DownloadUrl       string              `xml:"DownloadUrl"`
-	SlideshowType     uint8               `xml:"SlideshowType"`
-	InContest         bool                `xml:"InContest"`
-	UserID            uint64              `xml:"UserID"`
-	PPTLocation       string              `xml:"PPTLocation"`
-	StrippedTitle     string              `xml:"StrippedTitle"`
-	Tags              Tags                `xml:"Tags"`
-	Audio             bool                `xml:"Audio"`
-	NumDownloads      uint32              `xml:"NumDownloads"`
-	NumViews          uint32              `xml:"NumViews"`
-	NumComments       uint32              `xml:"NumComments"`
-	NumFavorites      uint32              `xml:"NumFavorites"`
-	NumSlides         uint16              `xml:"NumSlides"`
-	RelatedSlideshows RelatedSlideshowIDs `xml:"RelatedSlideshows"`
-	PrivacyLevel      bool                `xml:"PrivacyLevel"`
-	FlagVisible       bool                `xml:"FlagVisible"`
-	ShowOnSS          bool                `xml:"ShowOnSS"`
-	SecretURL         bool                `xml:"SecretUrl"`
-	AllowEmbed        bool                `xml:"AllowEmbed"`
-	ShareWithContacs  bool                `xml:"ShareWithContacs"`
+	XMLName           xml.Name `xml:"Slideshow"`
+	ID                uint64   `xml:"ID"`
+	Title             string   `xml:"Title"`
+	Description       string   `xml:"Description"`
+	Username          string   `xml:"Username"`
+	Status            uint8    `xml:"Status"`
+	Url               string   `xml:"URL"`
+	ThumbnailUrl      string   `xml:"ThumbnailURL"`
+	ThumbnailSize     string   `xml:"ThumbnailSize"`
+	ThumbnailSmallUrl string   `xml:"ThumbnailSmallURL"`
+	Embed             string   `xml:"Embed"`
+	Created           string   `xml:"Created"`
+	Updated           string   `xml:"Updated"`
+	Language          string   `xml:"Language"`
+	Format            string   `xml:"Format"`
+	Download          bool     `xml:"Download"`
+	DownloadUrl       string   `xml:"DownloadUrl"`
+	SlideshowType     uint8    `xml:"SlideshowType"`
+	InContest         bool     `xml:"InContest"`
+	UserID            uint64   `xml:"UserID"`
+	PPTLocation       string   `xml:"PPTLocation"`
+	StrippedTitle     string   `xml:"StrippedTitle"`
+	Tags              []string `xml:"Tags>Tag"`
+	Audio             bool     `xml:"Audio"`
+	NumDownloads      uint32   `xml:"NumDownloads"`
+	NumViews          uint32   `xml:"NumViews"`
+	NumComments       uint32   `xml:"NumComments"`
+	NumFavorites      uint32   `xml:"NumFavorites"`
+	NumSlides         uint16   `xml:"NumSlides"`
+	RelatedSlideshows []uint64 `xml:"RelatedSlideshows>RelatedSlideshowID"`
+	PrivacyLevel      bool     `xml:"PrivacyLevel"`
+	FlagVisible       bool     `xml:"FlagVisible"`
+	ShowOnSS          bool     `xml:"ShowOnSS"`
+	SecretURL         bool     `xml:"SecretUrl"`
+	AllowEmbed        bool     `xml:"AllowEmbed"`
+	ShareWithContacs  bool     `xml:"ShareWithContacs"`
 }
 
 var apiUrl = "https://www.slideshare.net/api/2"
