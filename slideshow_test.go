@@ -53,3 +53,22 @@ func TestGetSlideshowDetailed(t *testing.T) {
 		t.Fail()
 	}
 }
+func TestGetSlideshowsByTag(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	slideshows, err := service.GetSlideshowsByTag("db", false, 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if slideshows.TagName != "db" {
+		t.Fail()
+	}
+	if slideshows.Slideshows[0].Title != "Memcache basics on google app engine" {
+		t.Fail()
+	}
+	if slideshows.Slideshows[0].ID != 30796493 {
+		t.Fail()
+	}
+	if slideshows.Slideshows[0].Format != "pdf" {
+		t.Fail()
+	}
+}

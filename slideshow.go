@@ -16,7 +16,7 @@ import (
 type SlideshowsByTag struct {
 	TagName    string      `xml:"Name"`
 	Count      uint32      `xml:"Count"`
-	Slideshows []Slideshow `xml:"Tag>Slideshow"`
+	Slideshows []Slideshow `xml:"Slideshow"`
 }
 
 // Type which holds deleted slideshow ID.
@@ -118,13 +118,44 @@ func (s *Service) GetSlideshow(id int, detailed ...bool) (Slideshow, error) {
 	return slideshow, err
 }
 
-/*
 // GetSlideshowsByTag returns a Slideshows object:
 // tag string required, holds the tag name.
 // limit int optional, specify number of items to return.
 // detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
 // return: Slideshows instance.
-func (s *Service) GetSlideshowsByTag(tag string, limit int, offset int, detailed bool) (SlideshowsByTag, error) {}
+func (s *Service) GetSlideshowsByTag(tag string, detailed bool, limitOffset ...int) (SlideshowsByTag, error) {
+	args := make(map[string]string)
+	if limitOffset != nil {
+		switch len(limitOffset) {
+		case 1:
+			args["limit"] = strconv.Itoa(limitOffset[0])
+			break
+		case 2:
+			args["limit"] = strconv.Itoa(limitOffset[0])
+			args["offset"] = strconv.Itoa(limitOffset[1])
+			break
+		default:
+		}
+	} else {
+		args["limit"] = "10"
+	}
+	args["tag"] = tag
+	args["detailed"] = Btoa(detailed)
+	url := s.generateUrl("get_slideshows_by_tag", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return SlideshowsByTag{}, err
+	}
+	slideshows := SlideshowsByTag{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &slideshows)
+	}
+	return slideshows, err
+}
+
+/*
 func (s *Service) GetSlideshowsByGroup(groupName string, detailed bool) (Slideshows, error)    {}
 
 // GetSlideshowByUser returns a Slideshows object:
