@@ -1,5 +1,17 @@
 package slideshare
 
+import (
+	"crypto/sha1"
+	"encoding/xml"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strconv"
+	"time"
+)
+
 // Tags keeps an array with Tag IDs.
 type Tags struct {
 	Tags []Tag `xml:"Tags"`
@@ -73,12 +85,53 @@ type Slideshow struct {
 	ShareWithContacs  bool                `xml:"ShareWithContacs"`
 }
 
+var apiUrl = "https://www.slideshare.net/api/2"
+
+func (s *Service) generateUrl(apiMethod string, arguments map[string]string) string {
+	values := url.Values{}
+	for key, value := range arguments {
+		values.Set(key, value)
+	}
+	values.Set("api_key", s.ApiKey)
+	timestamp := fmt.Sprintf("%d", time.Now().Unix())
+	values.Set("ts", timestamp)
+	hash := sha1.New()
+	io.WriteString(hash, s.SharedSecret+timestamp)
+	values.Set("hash", fmt.Sprintf("%x", hash.Sum(nil)))
+	return apiUrl + "/" + apiMethod + "?" + values.Encode()
+}
+func Btoa(input bool) string {
+	if input {
+		return "1"
+	} else {
+		return "0"
+	}
+}
+
 // GetSlideshow returns information about a slideshow, parameters:
 // id int which holds the slideshow id, required.
 // detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
 // return: Slideshow instance.
-func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {}
+func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {
+	args := map[string]string{
+		"slideshow_id": strconv.Itoa(id),
+		"detailed":     Btoa(detailed),
+	}
+	url := s.generateUrl("get_slideshow", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return Slideshow{}, err
+	}
+	slideshow := Slideshow{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &slideshow)
+	}
+	return slideshow, err
+}
 
+/*
 // GetSlideshowsByTag returns a Slideshows object:
 // tag string required, holds the tag name.
 // limit int optional, specify number of items to return.
@@ -127,3 +180,4 @@ func (s *Service) DeleteSlideshow(username string, password string, slideshowID 
 // slideshow_tags optional, Comma separated list of tags.
 func (s *Service) UploadSlideshow(username string, password string, uploadURL string, slideshow_title string, slideshow_description string, slideshow_tags string, make_src_public string) bool {
 }
+*/

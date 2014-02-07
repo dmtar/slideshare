@@ -7,9 +7,8 @@ type UserFavorites struct {
 
 // UserFavorite keeps information about a favorited slideshow by a user.
 type UserFavorite struct {
-	XMLName     xml.Name `xml:"favorite"`
-	SlideshowID uint64   `xml:"slideshow_id"`
-	TagText     string   `xml:"tag_text"`
+	SlideshowID uint64 `xml:"slideshow_id"`
+	TagText     string `xml:"tag_text"`
 }
 
 // Contacts holds an array with all Contacts for a given user.
@@ -20,10 +19,9 @@ type Contacts struct {
 // Contact holds info like username, number of uploaded slideshows
 // number of comments of a Contact for a given user.
 type Contact struct {
-	XMLName       xml.Name `xml:"Contact"`
-	Username      string   `xml:"Username"`
-	NumSlideshows uint32   `xml:"NumSlideshows"`
-	NumComments   uint32   `xml:"NumComments"`
+	Username      string `xml:"Username"`
+	NumSlideshows uint32 `xml:"NumSlideshows"`
+	NumComments   uint32 `xml:"NumComments"`
 }
 type Groups struct {
 	Groups []Group `xml:"group"`
@@ -38,6 +36,7 @@ type Group struct {
 	Url           string `xml:"url"`
 }
 
+/*
 // Returns user favorites
 // username_for required, username of user whose favorites are being requested.
 func getUserFavorites(username_for string) (UserFavorites, error)
@@ -54,3 +53,4 @@ func getUserGroups(username_for string) (Groups, error)
 // username required, username of user whose tags are being requested
 // password required, password of user whose tags are being requested
 func getUserTags(username string, password string) (Tags, error)
+*/

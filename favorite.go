@@ -1,12 +1,12 @@
 package slideshare
 
 type Favorite struct {
-	XMLName     xml.Name `xml:"Slideshow"`
-	SlideshowID uint64   `xml:"SlideshowID"`
-	User        string   `xml:"User"`
-	Favorited   bool     `xml:"Favorited"`
+	SlideshowID uint64 `xml:"SlideshowID"`
+	User        string `xml:"User"`
+	Favorited   bool   `xml:"Favorited"`
 }
 
+/*
 // Check user favorites
 // username required, username of the  requesting user
 // password required, password of the  requesting user
@@ -20,3 +20,4 @@ func (s *Service) checkFavorite(username string, password string, slideshow_id s
 // slideshow_id required, the slideshow to be favorited
 func (s *Service) addFavorite(username string, password string, slideshow_id string) (Favorite, error) {
 }
+*/

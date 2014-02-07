@@ -8,6 +8,6 @@ const (
 // Type Service defines the service, it needs Api key and Shared Secret
 // which, the one who uses the service, should request from the SlideShare website.
 type Service struct {
-	Api_key      string
+	ApiKey       string
 	SharedSecret string
 }
