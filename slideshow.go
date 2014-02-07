@@ -13,8 +13,10 @@ import (
 )
 
 // Slideshows type holds ... an array with Slideshows.
-type Slideshows struct {
-	Slideshows []Slideshow
+type SlideshowsByTag struct {
+	TagName    string      `xml:"Name"`
+	Count      uint32      `xml:"Count"`
+	Slideshows []Slideshow `xml:"Tag>Slideshow"`
 }
 
 // Type which holds deleted slideshow ID.
@@ -92,11 +94,16 @@ func Btoa(input bool) string {
 // id int which holds the slideshow id, required.
 // detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
 // return: Slideshow instance.
-func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {
-	args := map[string]string{
-		"slideshow_id": strconv.Itoa(id),
-		"detailed":     Btoa(detailed),
+func (s *Service) GetSlideshow(id int, detailed ...bool) (Slideshow, error) {
+	args := make(map[string]string)
+	var details bool
+	if detailed == nil {
+		details = false
+	} else {
+		details = detailed[0]
 	}
+	args["slideshow_id"] = strconv.Itoa(id)
+	args["detailed"] = Btoa(details)
 	url := s.generateUrl("get_slideshow", args)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -117,7 +124,7 @@ func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {
 // limit int optional, specify number of items to return.
 // detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
 // return: Slideshows instance.
-func (s *Service) GetSlideshowsByTag(tag string, limit int, detailed bool) (Slideshows, error) {}
+func (s *Service) GetSlideshowsByTag(tag string, limit int, offset int, detailed bool) (SlideshowsByTag, error) {}
 func (s *Service) GetSlideshowsByGroup(groupName string, detailed bool) (Slideshows, error)    {}
 
 // GetSlideshowByUser returns a Slideshows object:
