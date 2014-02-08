@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	ApiKey       = YOUR_API_KEY
-	SharedSecret = YOUR_SHARED_SECRET
+	ApiKey       = API_KEY
+	SharedSecret = SHARED_SECRET
 )
 
 // Test basic getting of slideshow
@@ -92,8 +92,16 @@ func TestSearchSlideshows(t *testing.T) {
 
 func TestEditSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	isEdited := service.EditSlideshow("ddishev", PASSWORD, 29905515, "EditedTitleLastOne")
+	isEdited := service.EditSlideshow("ddishev", YOUR_PASSWORD, SLIDESHOW_ID, "Databeses")
 	if !isEdited {
+		t.Fail()
+	}
+}
+
+func TestDeleteSlideshow(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	isDeleted := service.DeleteSlideshow("ddishev", YOUR_PASSWORD, SLIDESHOW_ID)
+	if !isDeleted {
 		t.Fail()
 	}
 }

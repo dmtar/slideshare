@@ -15,6 +15,9 @@ import (
 type EditedSlideshow struct {
 	EditedID int `xml:"SlideShowID"`
 }
+type DeletedSlideshow struct {
+	DeletedID int `xml:"SlideshowID"`
+}
 
 // SlideshowsByTag struct keeps the Tag we are looking for
 // Count of all found slideshow and array with them.
@@ -351,13 +354,36 @@ func (s *Service) EditSlideshow(username string, password string, slideshowID in
 	}
 }
 
-/*
 // Delete a slideshow all parameters are required
 // username required,owner username of the slideshow which is being deleted
 // password required,owner password of the slideshow which is being deleted
 // slideshowID required,Id of slideshow which is being deleted
-func (s *Service) DeleteSlideshow(username string, password string, slideshowID string) bool {}
+func (s *Service) DeleteSlideshow(username string, password string, slideshowID int) bool {
+	args := make(map[string]string)
+	args["username"] = username
+	args["password"] = password
+	args["slideshow_id"] = strconv.Itoa(slideshowID)
+	url := s.generateUrl("delete_slideshow", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return false
+	}
+	slideshow := DeletedSlideshow{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &slideshow)
+		if slideshow.DeletedID == slideshowID {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return false
+	}
+}
 
+/*
 // Upload a slideshow
 // username required, username of the  requesting user
 // password required, password of the  requesting user
