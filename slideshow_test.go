@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	ApiKey       = "5Pl6RFlI" //Your API key
-	SharedSecret = "X1lMfjPo" // Your shared secret
-	Password     = "golangproject"
-	Username     = "ddishev"
+	ApiKey       = // Your API key
+	SharedSecret = // Your shared secret
+	Password     = 
+	Username     = 
 )
 
 // Test basic getting of slideshow
