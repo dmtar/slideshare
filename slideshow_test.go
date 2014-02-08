@@ -5,21 +5,23 @@ import (
 )
 
 const (
-	ApiKey       = YOUR_API_KEY
-	SharedSecret = YOUR_SHARED_SECRET
+	ApiKey       =  //Your API key
+	SharedSecret =  // Your shared secret
+	Password     = 
+	Username     =  
 )
 
 // Test basic getting of slideshow
 func TestGetSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.GetSlideshow(30975136)
+	slideshow, err := service.GetSlideshow(30130693)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshow.ID != 30975136 {
+	if slideshow.ID != 30130693 {
 		t.Fail()
 	}
-	if slideshow.Username != "ddishev" {
+	if slideshow.Username != "kalinazdravkova" {
 		t.Fail()
 	}
 }
@@ -27,14 +29,20 @@ func TestGetSlideshow(t *testing.T) {
 // Test getting a slideshow with detailed info
 func TestGetSlideshowDetailed(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.GetSlideshow(30975136, true)
+	slideshow, err := service.GetSlideshow(30130693, true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshow.ID != 30975136 {
+	if slideshow.ID != 30130693 {
 		t.Fail()
 	}
-	if slideshow.Username != "ddishev" {
+	if slideshow.Username != "kalinazdravkova" {
+		t.Fail()
+	}
+	if slideshow.UserID != 41191689 {
+		t.Fail()
+	}
+	if slideshow.Format != "pptx" {
 		t.Fail()
 	}
 }
@@ -59,30 +67,32 @@ func TestGetSlideshowsByTag(t *testing.T) {
 }
 func TestGetSlideshowsByUser(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshows, err := service.GetSlideshowsByUser("ddishev", true, 10)
+	slideshows, err := service.GetSlideshowsByUser("kalinazdravkova", true, 10)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshows.UserName != "ddishev" {
+	if slideshows.UserName != "kalinazdravkova" {
 		t.Fail()
 	}
-	if slideshows.Slideshows[0].ID != 30976468 {
+	if slideshows.Slideshows[0].ID != 30130693 {
 		t.Fail()
 	}
 }
 
 func TestEditSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	isEdited := service.EditSlideshow("ddishev", YOUR_PASSWORD, 30975136, "Databeses")
+	isEdited := service.EditSlideshow(Username, Password, 30975136, "TestName")
 	if !isEdited {
 		t.Fail()
 	}
 }
 
+/*
 func TestDeleteSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	isDeleted := service.DeleteSlideshow("ddishev", YOUR_PASSWORD, 30976468)
+	isDeleted := service.DeleteSlideshow(Username, Password, 30976468)
 	if !isDeleted {
 		t.Fail()
 	}
 }
+*/

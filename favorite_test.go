@@ -6,18 +6,19 @@ import (
 
 func TestCheckFavorite(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.CheckFavorite("ddishev", YOUR_PASSWORD, 29430493)
+	slideshow, err := service.CheckFavorite(Username, Password, 30130693)
 	if err != nil {
 		t.Fatal(err)
 	}
+	if slideshow.Favorited != false {
+		t.Fail()
+	}
+}
 
-	if slideshow.Favorited != true {
-		t.Fail()
-	}
-	if slideshow.SlideshowID != 29430493 {
-		t.Fail()
-	}
-	if slideshow.UserID != 59394728 {
+func TestAddFavorite(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	isFavorited := service.AddFavorite(Username, Password, 9662505)
+	if isFavorited != true {
 		t.Fail()
 	}
 }
