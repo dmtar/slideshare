@@ -2,10 +2,8 @@ package slideshare
 
 import (
 	"encoding/xml"
-
 	"io/ioutil"
 	"net/http"
-
 	"strconv"
 )
 

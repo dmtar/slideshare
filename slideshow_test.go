@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	ApiKey       =  //Your API key
-	SharedSecret =  // Your shared secret
+	ApiKey       = // Your API key
+	SharedSecret = // Your shared secret
 	Password     = 
-	Username     =  
+	Username     = 
 )
 
 // Test basic getting of slideshow

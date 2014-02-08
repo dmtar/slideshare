@@ -1,11 +1,14 @@
 package slideshare
 
-// UserFavorites keeps an array with favorited slideshows by a user.
-type UserFavorites struct {
-	Favorites []UserFavorite `xml:"favorites"`
-}
+import (
+	"encoding/xml"
+	"io/ioutil"
+	"net/http"
+)
 
-// UserFavorite keeps information about a favorited slideshow by a user.
+type UserFavorites struct {
+	Values []UserFavorite `xml:"favorite"`
+}
 type UserFavorite struct {
 	SlideshowID uint64 `xml:"slideshow_id"`
 	TagText     string `xml:"tag_text"`
@@ -36,21 +39,36 @@ type Group struct {
 	Url           string `xml:"url"`
 }
 
-/*
 // Returns user favorites
 // username_for required, username of user whose favorites are being requested.
-func getUserFavorites(username_for string) (UserFavorites, error)
+func (s *Service) GetUserFavorites(username_for string) (UserFavorites, error) {
+	args := make(map[string]string)
+	args["username_for"] = username_for
+	url := s.generateUrl("get_user_favorites", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return UserFavorites{}, err
+	}
+	slideshows := UserFavorites{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &slideshows)
+	}
+	return slideshows, err
+}
 
+/*
 // Returns user contacts
 // username_for required, username of user whose contacts are being requested
-func getUserContacts(username_for string, limit uint32) (Contacts, error)
+func (s *Service) GetUserContacts(username_for string, limit uint32) (Contacts, error)
 
 // Returns user groups
 // username_for required, username of user whose groups are being requested
-func getUserGroups(username_for string) (Groups, error)
+func (s *Service) GetUserGroups(username_for string) (Groups, error)
 
 // Returns user tags
 // username required, username of user whose tags are being requested
 // password required, password of user whose tags are being requested
-func getUserTags(username string, password string) (Tags, error)
+func (s *Service) GetUserTags(username string, password string) (Tags, error)
 */
