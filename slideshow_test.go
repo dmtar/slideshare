@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	ApiKey       = "5Pl6RFlI"
-	SharedSecret = "X1lMfjPo"
+	ApiKey       = YOUR_API_KEY
+	SharedSecret = YOUR_SHARED_SECRET
 )
 
 // Test basic getting of slideshow
@@ -17,9 +17,6 @@ func TestGetSlideshow(t *testing.T) {
 		t.Fatal(err)
 	}
 	if slideshow.ID != 29905515 {
-		t.Fail()
-	}
-	if slideshow.Title != "Databases some other lecture" {
 		t.Fail()
 	}
 	if slideshow.Username != "ddishev" {
@@ -35,9 +32,6 @@ func TestGetSlideshowDetailed(t *testing.T) {
 		t.Fatal(err)
 	}
 	if slideshow.ID != 29905515 {
-		t.Fail()
-	}
-	if slideshow.Title != "Databases some other lecture" {
 		t.Fail()
 	}
 	if slideshow.Username != "ddishev" {
@@ -69,6 +63,37 @@ func TestGetSlideshowsByTag(t *testing.T) {
 		t.Fail()
 	}
 	if slideshows.Slideshows[0].Format != "pdf" {
+		t.Fail()
+	}
+}
+func TestGetSlideshowsByUser(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	slideshows, err := service.GetSlideshowsByUser("ddishev", true, 10)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if slideshows.UserName != "ddishev" {
+		t.Fail()
+	}
+	if slideshows.Slideshows[0].ID != 29905515 {
+		t.Fail()
+	}
+	if slideshows.Slideshows[0].Format != "ppt" {
+		t.Fail()
+	}
+}
+func TestSearchSlideshows(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	_, err := service.SearchSlideshows("db", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestEditSlideshow(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	isEdited := service.EditSlideshow("ddishev", PASSWORD, 29905515, "EditedTitleLastOne")
+	if !isEdited {
 		t.Fail()
 	}
 }
