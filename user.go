@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type UserFavorites struct {
@@ -13,19 +14,15 @@ type UserFavorite struct {
 	SlideshowID uint64 `xml:"slideshow_id"`
 	TagText     string `xml:"tag_text"`
 }
-
-// Contacts holds an array with all Contacts for a given user.
-type Contacts struct {
-	Contacts []Contact `xml:"Contacts"`
+type UserContacts struct {
+	Values []UserContact `xml:"Contact"`
 }
-
-// Contact holds info like username, number of uploaded slideshows
-// number of comments of a Contact for a given user.
-type Contact struct {
+type UserContact struct {
 	Username      string `xml:"Username"`
 	NumSlideshows uint32 `xml:"NumSlideshows"`
 	NumComments   uint32 `xml:"NumComments"`
 }
+
 type Groups struct {
 	Groups []Group `xml:"group"`
 }
@@ -49,20 +46,47 @@ func (s *Service) GetUserFavorites(username_for string) (UserFavorites, error) {
 	if err != nil {
 		return UserFavorites{}, err
 	}
-	slideshows := UserFavorites{}
+	favorites := UserFavorites{}
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 	if err == nil {
-		xml.Unmarshal([]byte(responseBody), &slideshows)
+		xml.Unmarshal([]byte(responseBody), &favorites)
 	}
-	return slideshows, err
+	return favorites, err
+}
+
+// Returns user contacts
+// username_for required, username of user whose contacts are being requested
+func (s *Service) GetUserContacts(username_for string, limitOffset ...int) (UserContacts, error) {
+	args := make(map[string]string)
+	if limitOffset != nil {
+		switch len(limitOffset) {
+		case 1:
+			args["limit"] = strconv.Itoa(limitOffset[0])
+			break
+		case 2:
+			args["limit"] = strconv.Itoa(limitOffset[0])
+			args["offset"] = strconv.Itoa(limitOffset[1])
+			break
+		default:
+		}
+	}
+	args["username_for"] = username_for
+	url := s.generateUrl("get_user_contacts", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return UserContacts{}, err
+	}
+	contacts := UserContacts{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &contacts)
+	}
+	return contacts, err
 }
 
 /*
-// Returns user contacts
-// username_for required, username of user whose contacts are being requested
-func (s *Service) GetUserContacts(username_for string, limit uint32) (Contacts, error)
-
 // Returns user groups
 // username_for required, username of user whose groups are being requested
 func (s *Service) GetUserGroups(username_for string) (Groups, error)
