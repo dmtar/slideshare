@@ -2,7 +2,7 @@ package slideshare
 
 import (
 	"fmt"
-	"github.com/dmtar/go-slideshare"
+	"github.com/dmtar/slideshare"
 )
 
 // You have to get API_KEY & SHARED_SECRET from Slideshare
@@ -44,16 +44,26 @@ func ExampleGetSlideshow2() {
 // Getting slideshows which have "sql" tag.
 func ExampleGetSlideshowsByTag() {
 	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
-	slideshows, err := service.GetSlideshowsByTag("sql", 10, false)
+	slideshows, err := service.GetSlideshowsByTag("dishev", false)
 
 	fmt.Println("ID: ", slideshows.Slideshows[0].ID)
 	fmt.Println("Title: ", slideshows.Slideshows[0].Title)
-	fmt.Println("Description: ", slideshows.Slideshows[0].Description)
 	fmt.Println("Username: ", slideshows.Slideshows[0].Username)
 	// Output:
-	// ID: 29748976
-	// Title: Adding Value to HBase with IBM InfoSphere BigInsights and BigSQL
-	// Description: This is the extended deck I used for my presentation at the Information On Demand 2013 conference for Session Number 1687 - Adding Value to HBase with IBM InfoSphere BigInsights and BigSQL.
-	// This presentation covers accessing HBase using Big SQL. It starts by going over general HBase concepts, than delves into how Big SQL adds an SQL layer on top of HBase (via HBase storage handler), secondary index support, queries, etc.
-	// Username: ppruski
+	// ID: 30975136
+	// Title: Do not delete!
+	// Username: ddishev
+}
+func ExampleGetSlideshowsByUser() {
+	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
+	slideshows, err := service.GetSlideshowsByUser("ddishev", false)
+	lastSlideshowIndex := slideshows.Count - 1
+
+	fmt.Println("ID: ", slideshows.Slideshows[lastSlideshowIndex].ID)
+	fmt.Println("Title: ", slideshows.Slideshows[lastSlideshowIndex].Title)
+	fmt.Println("Username: ", slideshows.Slideshows[lastSlideshowIndex].Username)
+	// Output:
+	// ID: 30975136
+	// Title: Do not delete!
+	// Username: ddishev
 }

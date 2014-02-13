@@ -36,11 +36,6 @@ type SlideshowsSearch struct {
 	Slideshows   []Slideshow `xml:"Slideshow"`
 }
 
-// Type which holds deleted slideshow ID.
-type SlideShowDeleteted struct {
-	ID uint64 `xml:SlideShowDeleted>SlideshowID`
-}
-
 // Slideshow type, which holds all the information about a slideshow
 // properties bellow InContest are detailed, they will have reliabe information
 // if detailed flag is set to true.

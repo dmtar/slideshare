@@ -45,6 +45,21 @@ func TestGetSlideshowDetailed(t *testing.T) {
 	if slideshow.Format != "pptx" {
 		t.Fail()
 	}
+	if slideshow.NumSlides != 63 {
+		t.Fail()
+	}
+	if slideshow.PrivacyLevel != false {
+		t.Fail()
+	}
+	if slideshow.FlagVisible != true {
+		t.Fail()
+	}
+	if slideshow.RelatedSlideshows[0] != 30098657 {
+		t.Fail()
+	}
+	if slideshow.StrippedTitle != "databases-30975136" {
+		t.Fail()
+	}
 }
 func TestGetSlideshowsByTag(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
