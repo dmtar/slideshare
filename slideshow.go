@@ -18,6 +18,9 @@ type EditedSlideshow struct {
 type DeletedSlideshow struct {
 	DeletedID int `xml:"SlideshowID"`
 }
+type UploadedSlideshow struct {
+	UploadedID int `xml:"SlideShowID"`
+}
 
 // SlideshowsByTag struct keeps the Tag we are looking for
 // Count of all found slideshow and array with them.
@@ -40,7 +43,6 @@ type SlideshowsByUser struct {
 // and array with slideshows.
 type SlideshowsSearch struct {
 	QueryString  string      `xml:"Meta>Query"`
-	ResultOffset uint16      `xml:"Meta>ResultOffset"`
 	NumResults   uint32      `xml:"Meta>NumResults"`
 	TotalResults uint64      `xml:"Meta>TotalResults"`
 	Slideshows   []Slideshow `xml:"Slideshow"`
@@ -237,36 +239,30 @@ func (s *Service) SearchSlideshows(queryString string, detailed bool, additional
 		switch len(additionalParams) {
 		case 1:
 			args["page"] = additionalParams[0]
+			args["items_per_page"] = "12"
+			args["sort"] = "relevance"
+			args["upload_date"] = "any"
 			break
 		case 2:
 			args["page"] = additionalParams[0]
 			args["items_per_page"] = additionalParams[1]
+			args["sort"] = "relevance"
+			args["upload_date"] = "any"
 			break
 		case 3:
 			args["page"] = additionalParams[0]
 			args["items_per_page"] = additionalParams[1]
-			args["lang"] = additionalParams[2]
+			args["sort"] = additionalParams[2]
+			args["upload_date"] = "any"
 			break
 		case 4:
 			args["page"] = additionalParams[0]
 			args["items_per_page"] = additionalParams[1]
-			args["lang"] = additionalParams[2]
-			args["sort"] = additionalParams[3]
-			break
-		case 5:
-			args["page"] = additionalParams[0]
-			args["items_per_page"] = additionalParams[1]
-			args["lang"] = additionalParams[2]
-			args["sort"] = additionalParams[3]
-			args["upload_date"] = additionalParams[4]
+			args["sort"] = additionalParams[2]
+			args["upload_date"] = additionalParams[3]
 			break
 		default:
 		}
-	} else {
-		args["page"] = "1"
-		args["items_per_page"] = "16"
-		args["sort"] = "relevance"
-		args["upload_date"] = "any"
 	}
 	args["q"] = queryString
 	args["detailed"] = Btoa(detailed)
@@ -383,7 +379,6 @@ func (s *Service) DeleteSlideshow(username string, password string, slideshowID 
 	}
 }
 
-/*
 // Upload a slideshow
 // username required, username of the  requesting user
 // password required, password of the  requesting user
@@ -391,6 +386,39 @@ func (s *Service) DeleteSlideshow(username string, password string, slideshowID 
 // slideshow_title required, Title of the slideshow
 // slideshow_description optional, slideshow description
 // slideshow_tags optional, Comma separated list of tags.
-func (s *Service) UploadSlideshow(username string, password string, uploadURL string, slideshow_title string, slideshow_description string, slideshow_tags string, make_src_public string) bool {
+func (s *Service) UploadSlideshow(username string, password string, uploadURL string, slideshowTitle string, additionalParams ...string) (int, bool) {
+	args := make(map[string]string)
+	if additionalParams != nil {
+		switch len(additionalParams) {
+		case 1:
+			args["slideshow_description"] = additionalParams[0]
+			break
+		case 2:
+			args["slideshow_description"] = additionalParams[0]
+			args["slideshow_tags"] = additionalParams[1]
+			break
+		default:
+		}
+	}
+	args["username"] = username
+	args["password"] = password
+	args["upload_url"] = uploadURL
+	args["slideshow_title"] = slideshowTitle
+	url := s.generateUrl("upload_slideshow", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return 0, false
+	}
+	slideshow := UploadedSlideshow{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &slideshow)
+		if slideshow.UploadedID == 0 {
+			return 0, false
+		}
+		return slideshow.UploadedID, true
+	} else {
+		return 0, false
+	}
 }
-*/

@@ -5,23 +5,23 @@ import (
 )
 
 const (
-	ApiKey       = // Your API key
-	SharedSecret = // Your shared secret
-	Password     = 
-	Username     = 
+	ApiKey       = "5Pl6RFlI"
+	SharedSecret = "X1lMfjPo"
+	Password     = "golangtestproject"
+	Username     = "ddishev"
 )
 
 // Test basic getting of slideshow
 func TestGetSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.GetSlideshow(30130693)
+	slideshow, err := service.GetSlideshow(30975136)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshow.ID != 30130693 {
+	if slideshow.ID != 30975136 {
 		t.Fail()
 	}
-	if slideshow.Username != "kalinazdravkova" {
+	if slideshow.Username != "ddishev" {
 		t.Fail()
 	}
 }
@@ -29,17 +29,17 @@ func TestGetSlideshow(t *testing.T) {
 // Test getting a slideshow with detailed info
 func TestGetSlideshowDetailed(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.GetSlideshow(30130693, true)
+	slideshow, err := service.GetSlideshow(30975136, true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshow.ID != 30130693 {
+	if slideshow.ID != 30975136 {
 		t.Fail()
 	}
-	if slideshow.Username != "kalinazdravkova" {
+	if slideshow.Username != "ddishev" {
 		t.Fail()
 	}
-	if slideshow.UserID != 41191689 {
+	if slideshow.UserID != 59394728 {
 		t.Fail()
 	}
 	if slideshow.Format != "pptx" {
@@ -48,7 +48,7 @@ func TestGetSlideshowDetailed(t *testing.T) {
 }
 func TestGetSlideshowsByTag(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshows, err := service.GetSlideshowsByTag("db", false, 2)
+	slideshows, err := service.GetSlideshowsByTag("db", false, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,32 +67,53 @@ func TestGetSlideshowsByTag(t *testing.T) {
 }
 func TestGetSlideshowsByUser(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshows, err := service.GetSlideshowsByUser("kalinazdravkova", true, 10)
+	slideshows, err := service.GetSlideshowsByUser("ddishev", true, 10)
+	lastSlideshowIndex := slideshows.Count - 1
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshows.UserName != "kalinazdravkova" {
+	if slideshows.UserName != "ddishev" {
 		t.Fail()
 	}
-	if slideshows.Slideshows[0].ID != 30130693 {
+	if slideshows.Slideshows[lastSlideshowIndex].ID != 30975136 {
 		t.Fail()
 	}
 }
 
 func TestEditSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	isEdited := service.EditSlideshow(Username, Password, 30975136, "TestName")
+	isEdited := service.EditSlideshow(Username, Password, 30975136, "Do not delete!")
 	if !isEdited {
 		t.Fail()
 	}
 }
 
-/*
+func TestSearchSlideshow(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	slideshows, err := service.SearchSlideshows("golang", false, "1", "12")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if slideshows.Slideshows[0].ID != 23464107 {
+		t.Fail()
+	}
+}
+
+var uploadedSlideshowID = 0
+
+func TestUploadSlideshow(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	id, isUploaded := service.UploadSlideshow(Username, Password, "http://www.fmi.uni-sofia.bg/Members/marian/42143844144243543c438-43e44143d43e43243043d438-43d430-43743d43043d43844f-44143f43544643843043b43d43e441442-41843d44443e44043c43044643843e43d43d438-44143844144243543c438-2011-2012-44344743543143d430-43343e43443843d430/KBS_Lecture4_1314.pdf", "Test Title", "Uploaded by API upload method")
+	if !isUploaded || id == 0 {
+		t.Fail()
+	}
+	uploadedSlideshowID = id
+}
+
 func TestDeleteSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	isDeleted := service.DeleteSlideshow(Username, Password, 30976468)
+	isDeleted := service.DeleteSlideshow(Username, Password, uploadedSlideshowID)
 	if !isDeleted {
 		t.Fail()
 	}
 }
-*/
