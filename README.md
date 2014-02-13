@@ -14,6 +14,8 @@ When everything is ready, package installation should be done via command bellow
 Methods
 --------
 
+Tested:
+
 - add_favorite
 - check_favorite
 - delete_slideshow
@@ -25,6 +27,8 @@ Methods
 - get_user_favorites
 - search_slideshows
 - upload_slideshow
+
+Not working for some reasons:
 
 - get_slideshow_by_group (500 Internal Server Error)
 - get_user_groups (after redirecting returns "This is probably a temporary error, please check back in 5-10 minutes.")
