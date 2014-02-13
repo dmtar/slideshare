@@ -51,12 +51,11 @@ Examples
 
     func main() {
         service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
-        slideshow, err := service.GetSlideshow(29551397)
+        slideshow, err := service.GetSlideshow(30975136)
         if err != nil {
             fmt.Println(err)
         }
         fmt.Println("ID: ", slideshow.ID)
         fmt.Println("Title: ", slideshow.Title)
-        fmt.Println("Description: ", slideshow.Description)
         fmt.Println("Username: ", slideshow.Username)
     }
