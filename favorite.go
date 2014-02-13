@@ -7,12 +7,6 @@ import (
 	"strconv"
 )
 
-type Favorite struct {
-	SlideshowID int    `xml:"SlideshowID"`
-	UserID      uint64 `xml:"User"`
-	Favorited   bool   `xml:"Favorited"`
-}
-
 // Check user favorites
 // username required, username of the  requesting user
 // password required, password of the  requesting user
