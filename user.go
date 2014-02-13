@@ -7,8 +7,7 @@ import (
 	"strconv"
 )
 
-// Returns user favorites
-// username_for required, username of user whose favorites are being requested.
+// GetUserFavorites needs username of user whose Favorites are being requested.
 func (s *Service) GetUserFavorites(username_for string) (UserFavorites, error) {
 	args := make(map[string]string)
 	args["username_for"] = username_for
@@ -26,8 +25,8 @@ func (s *Service) GetUserFavorites(username_for string) (UserFavorites, error) {
 	return favorites, err
 }
 
-// Returns user contacts
-// username_for required, username of user whose contacts are being requested
+// GetUserContacts needs username of user whose Contacts are being requested.
+// You can 1 additional parameter int to specify number of items to return.
 func (s *Service) GetUserContacts(username_for string, limitOffset ...int) (UserContacts, error) {
 	args := make(map[string]string)
 	if limitOffset != nil {
@@ -57,6 +56,25 @@ func (s *Service) GetUserContacts(username_for string, limitOffset ...int) (User
 	return contacts, err
 }
 
+// GetUserTags needs username and password of the requesting user.
+func (s *Service) GetUserTags(username string, password string) (Tags, error) {
+	args := make(map[string]string)
+	args["username"] = username
+	args["password"] = password
+	url := s.generateUrl("get_user_tags", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return Tags{}, err
+	}
+	tags := Tags{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &tags)
+	}
+	return tags, err
+}
+
 /*
 // Returns user groups
 // username_for required, username of user whose groups are being requested
@@ -78,23 +96,3 @@ func (s *Service) GetUserGroups(username_for string, additionalParams ...string)
 	return groups, err
 }
 */
-// Returns user tags
-// username required, username of user whose tags are being requested
-// password required, password of user whose tags are being requested
-func (s *Service) GetUserTags(username string, password string) (Tags, error) {
-	args := make(map[string]string)
-	args["username"] = username
-	args["password"] = password
-	url := s.generateUrl("get_user_tags", args)
-	resp, err := http.Get(url)
-	if err != nil {
-		return Tags{}, err
-	}
-	tags := Tags{}
-	responseBody, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-	if err == nil {
-		xml.Unmarshal([]byte(responseBody), &tags)
-	}
-	return tags, err
-}

@@ -14,7 +14,7 @@ const (
 // Test basic getting of slideshow
 func TestGetSlideshow(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshow, err := service.GetSlideshow(30975136)
+	slideshow, err := service.GetSlideshow(30975136, false)
 	if err != nil {
 		t.Fatal(err)
 	}

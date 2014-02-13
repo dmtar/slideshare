@@ -7,20 +7,12 @@ import (
 	"strconv"
 )
 
-// GetSlideshow returns information about a slideshow, parameters:
-// id int which holds the slideshow id, required.
-// detailed bool Whether or not to include optional information. true to include, false (default) for basic information.
-// return: Slideshow instance.
-func (s *Service) GetSlideshow(id int, detailed ...bool) (Slideshow, error) {
+// GetSlideshow returns information about a slideshow
+// needs id of the slideshow to be fetched, and detailed flag.
+func (s *Service) GetSlideshow(id int, detailed bool) (Slideshow, error) {
 	args := make(map[string]string)
-	var details bool
-	if detailed == nil {
-		details = false
-	} else {
-		details = detailed[0]
-	}
 	args["slideshow_id"] = strconv.Itoa(id)
-	args["detailed"] = Btoa(details)
+	args["detailed"] = Btoa(detailed)
 	url := s.generateUrl("get_slideshow", args)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -35,11 +27,8 @@ func (s *Service) GetSlideshow(id int, detailed ...bool) (Slideshow, error) {
 	return slideshow, err
 }
 
-// GetSlideshowByUser returns a Slideshows object:
-// tag string required, tag name.
-// detailed bool required, whether or not to include additional information for the slideshows.
-// limitOffset int optinal, first int for limit, second for offset, others are ignored.
-// returns SlideshowsByTag
+// GetSlideshowByTag need tag name and detailed flag
+// limit and offset are optional if they are used, should be passed in that way limit first then offset.
 func (s *Service) GetSlideshowsByTag(tag string, detailed bool, limitOffset ...int) (SlideshowsByTag, error) {
 	args := make(map[string]string)
 	if limitOffset != nil {
@@ -53,8 +42,6 @@ func (s *Service) GetSlideshowsByTag(tag string, detailed bool, limitOffset ...i
 			break
 		default:
 		}
-	} else {
-		args["limit"] = "10"
 	}
 	args["tag"] = tag
 	args["detailed"] = Btoa(detailed)
@@ -72,17 +59,8 @@ func (s *Service) GetSlideshowsByTag(tag string, detailed bool, limitOffset ...i
 	return slideshows, err
 }
 
-/*
-func (s *Service) GetSlideshowsByGroup(groupName string, detailed bool) (Slideshows, error) {
-
-}
-*/
-
-// GetSlideshowByUser returns a Slideshows object:
-// username string required, username of the owner of slideshows.
-// detailed bool required, whether or not to include additional information for the slideshows.
-// limitOffset int optinal, first int for limit, second for offset, others are ignored.
-// returns SlideshowsByUser
+// GetSlideshowByUser needs username and detailed flag arguments, others like
+// limit and offset are optional.Should be passed in that way limit first then offset.
 func (s *Service) GetSlideshowsByUser(username string, detailed bool, limitOffset ...int) (SlideshowsByUser, error) {
 	args := make(map[string]string)
 	if limitOffset != nil {
@@ -96,8 +74,6 @@ func (s *Service) GetSlideshowsByUser(username string, detailed bool, limitOffse
 			break
 		default:
 		}
-	} else {
-		args["limit"] = "10"
 	}
 	args["username_for"] = username
 	args["detailed"] = Btoa(detailed)
@@ -115,12 +91,11 @@ func (s *Service) GetSlideshowsByUser(username string, detailed bool, limitOffse
 	return slideshows, err
 }
 
-// Search for a slideshow:
-// queryString required, search keyword
-// page optional, the page number of the results (works in conjunction with items_per_page), default is 1
-// items_per_page optional, number of results to return per page, default is 12
-// lang optional, Language of slideshows (default is English, 'en') ('**':All,'es':Spanish,'pt':Portuguese,'fr':French,'it':Italian,'nl':Dutch, 'de':German,'zh':Chinese,'ja':Japanese,'ko':Korean,'ro':Romanian, '!!':Other)
-// sort optional, Sort order, default is relevance.
+// Search for a slideshow needs query string and detailed flag arguments
+// Optional are page default is 1, items per page default is 12,
+// sort type default is relevance, and upload date default is any
+// If you want to change the default values of additional parameters, you
+// should pass them like that: page,items_per_page,sort,upload_date and values casted to string.
 func (s *Service) SearchSlideshows(queryString string, detailed bool, additionalParams ...string) (SlideshowsSearch, error) {
 	args := make(map[string]string)
 	if additionalParams != nil {
@@ -150,7 +125,17 @@ func (s *Service) SearchSlideshows(queryString string, detailed bool, additional
 			args["upload_date"] = additionalParams[3]
 			break
 		default:
+			args["page"] = "1"
+			args["items_per_page"] = "12"
+			args["sort"] = "relevance"
+			args["upload_date"] = "any"
+			break
 		}
+	} else {
+		args["page"] = "1"
+		args["items_per_page"] = "12"
+		args["sort"] = "relevance"
+		args["upload_date"] = "any"
 	}
 	args["q"] = queryString
 	args["detailed"] = Btoa(detailed)
@@ -168,13 +153,10 @@ func (s *Service) SearchSlideshows(queryString string, detailed bool, additional
 	return slideshows, err
 }
 
-// Edit a Slideshow, you can change only the title, tags and privacy of the slideshow.
-// username required, owner username of the slideshow which is being edited
-// password required, owner password of the slideshow which is being edited
-// slideshowID required, id of slideshow which is being edited.
-// slideshow_title optional, Title of the slideshow
-// slideshow_ tags optional, Comma separated list of tags
-// make_slideshow_private optional, Should be Y if you want to make the slideshow private.
+// Edit a Slideshow needs username and password of the owner of the requesting user and slideshow id
+// other parameters are new title, new tags and make the slideshow private,
+// generate secret url, allow embeds and share with contacts are optinal.You have to pass their values
+// like strigs.
 func (s *Service) EditSlideshow(username string, password string, slideshowID int, additionalParams ...string) bool {
 	args := make(map[string]string)
 	if additionalParams != nil {
@@ -238,10 +220,7 @@ func (s *Service) EditSlideshow(username string, password string, slideshowID in
 	}
 }
 
-// Delete a slideshow all parameters are required
-// username required,owner username of the slideshow which is being deleted
-// password required,owner password of the slideshow which is being deleted
-// slideshowID required,Id of slideshow which is being deleted
+// Delete a slideshow needs username and password of the requesting user and slideshow ID.
 func (s *Service) DeleteSlideshow(username string, password string, slideshowID int) bool {
 	args := make(map[string]string)
 	args["username"] = username
@@ -267,13 +246,14 @@ func (s *Service) DeleteSlideshow(username string, password string, slideshowID 
 	}
 }
 
-// Upload a slideshow
-// username required, username of the  requesting user
-// password required, password of the  requesting user
-// uploadURL required, string containing an url pointing to the power point file: ex: http://domain.tld/directory/my_power_point.ppt
-// slideshow_title required, Title of the slideshow
-// slideshow_description optional, slideshow description
-// slideshow_tags optional, Comma separated list of tags.
+// This method requires extra permissions.
+// If you want to upload a file using SlideShare API, please send an email to api@slideshare.com with your developer account username describing the use case.
+// The method requires username and password of the requesting user, title and upload url string containing an url pointing to the power point file:
+// ex: http://domain.tld/directory/my_power_point.ppt
+// The following urls are also acceptable
+// http://www.domain.tld/directory/file.ppt
+// http://www.domain.tld/directory/file.cgi?filename=file.ppt
+// Optinal parameters are description of the slideshow and slideshow tags.
 func (s *Service) UploadSlideshow(username string, password string, uploadURL string, slideshowTitle string, additionalParams ...string) (int, bool) {
 	args := make(map[string]string)
 	if additionalParams != nil {
@@ -310,3 +290,9 @@ func (s *Service) UploadSlideshow(username string, password string, uploadURL st
 		return 0, false
 	}
 }
+
+/*
+func (s *Service) GetSlideshowsByGroup(groupName string, detailed bool) (Slideshows, error) {
+
+}
+*/

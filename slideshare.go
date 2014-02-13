@@ -12,12 +12,13 @@ import (
 var apiUrl = "https://www.slideshare.net/api/2"
 
 // Type Service defines the service, it needs Api key and Shared Secret
-// which, the one who uses the service, should request from the SlideShare website.
+// you can obtain them from slideshare website.
 type Service struct {
 	ApiKey       string
 	SharedSecret string
 }
 
+// Generetes the URL needed to call the API.
 func (s *Service) generateUrl(apiMethod string, arguments map[string]string) string {
 	values := url.Values{}
 	for key, value := range arguments {
@@ -31,6 +32,8 @@ func (s *Service) generateUrl(apiMethod string, arguments map[string]string) str
 	values.Set("hash", fmt.Sprintf("%x", hash.Sum(nil)))
 	return apiUrl + "/" + apiMethod + "?" + values.Encode()
 }
+
+// Cast bool to string
 func Btoa(input bool) string {
 	if input {
 		return "1"

@@ -7,10 +7,8 @@ import (
 	"strconv"
 )
 
-// Check user favorites
-// username required, username of the  requesting user
-// password required, password of the  requesting user
-// slideshow_id required, Slideshow which is being checked
+// Check user favorite needs username and password of the requesting user
+// and id of the slideshow which is being checked, whether is favorited by the user.
 func (s *Service) CheckFavorite(username string, password string, slideshow_id int) (Favorite, error) {
 	args := make(map[string]string)
 	args["username"] = username
@@ -30,10 +28,8 @@ func (s *Service) CheckFavorite(username string, password string, slideshow_id i
 	return slideshow, err
 }
 
-// Favorite a slideshow (identified by slideshow_id)
-// username required, username of the  requesting user
-// password required, password of the  requesting user
-// slideshow_id required, the slideshow to be favorited
+// Add favorite favorites a slideshow. Needs username and password of the requesting user
+// and id of the slideshow to be favorited.
 func (s *Service) AddFavorite(username string, password string, slideshow_id int) bool {
 	args := make(map[string]string)
 	args["username"] = username
