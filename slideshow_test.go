@@ -48,20 +48,20 @@ func TestGetSlideshowDetailed(t *testing.T) {
 }
 func TestGetSlideshowsByTag(t *testing.T) {
 	service := Service{ApiKey, SharedSecret}
-	slideshows, err := service.GetSlideshowsByTag("db", false, 1)
+	slideshows, err := service.GetSlideshowsByTag("dishev", false, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if slideshows.TagName != "db" {
+	if slideshows.TagName != "dishev" {
 		t.Fail()
 	}
-	if slideshows.Slideshows[0].Title != "Memcache basics on google app engine" {
+	if slideshows.Slideshows[0].Title != "Do not delete!" {
 		t.Fail()
 	}
-	if slideshows.Slideshows[0].ID != 30796493 {
+	if slideshows.Slideshows[0].ID != 30975136 {
 		t.Fail()
 	}
-	if slideshows.Slideshows[0].Format != "pdf" {
+	if slideshows.Slideshows[0].Format != "pptx" {
 		t.Fail()
 	}
 }

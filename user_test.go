@@ -26,8 +26,22 @@ func TestGetUserContacts(t *testing.T) {
 	}
 }
 
-/*
-func TestGetUserGroups(t *testing.T)
+func TestGetUserTags(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	tags, err := service.GetUserTags("ddishev", "golangtestproject")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tags.Names[0] != "db" {
+		t.Fail()
+	}
+}
 
-func TestGetUserTags(t *testing.T)
+/*
+func TestGetUserGroups(t *testing.T) {
+	service := Service{ApiKey, SharedSecret}
+	groups, _ := service.GetUserGroups("rashmi")
+	fmt.Println(groups)
+}
+
 */

@@ -60,10 +60,41 @@ func (s *Service) GetUserContacts(username_for string, limitOffset ...int) (User
 /*
 // Returns user groups
 // username_for required, username of user whose groups are being requested
-func (s *Service) GetUserGroups(username_for string) (Groups, error)
-
+func (s *Service) GetUserGroups(username_for string, additionalParams ...string) (Groups, error) {
+	args := make(map[string]string)
+	args["username_for"] = username_for
+	url := s.generateUrl("get_user_groups", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return Groups{}, err
+	}
+	groups := Groups{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		fmt.Println(responseBody)
+		//xml.Unmarshal([]byte(responseBody), &groups)
+	}
+	return groups, err
+}
+*/
 // Returns user tags
 // username required, username of user whose tags are being requested
 // password required, password of user whose tags are being requested
-func (s *Service) GetUserTags(username string, password string) (Tags, error)
-*/
+func (s *Service) GetUserTags(username string, password string) (Tags, error) {
+	args := make(map[string]string)
+	args["username"] = username
+	args["password"] = password
+	url := s.generateUrl("get_user_tags", args)
+	resp, err := http.Get(url)
+	if err != nil {
+		return Tags{}, err
+	}
+	tags := Tags{}
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err == nil {
+		xml.Unmarshal([]byte(responseBody), &tags)
+	}
+	return tags, err
+}

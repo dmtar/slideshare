@@ -17,7 +17,7 @@ type UserContact struct {
 }
 
 type Groups struct {
-	Groups []Group `xml:"group"`
+	Values []Group `xml:"group"`
 }
 type Group struct {
 	Name          string `xml:"name"`
@@ -27,4 +27,7 @@ type Group struct {
 	Created       string `xml:"created"`
 	QueryName     string `xml:"queryname"`
 	Url           string `xml:"url"`
+}
+type Tags struct {
+	Names []string `xml:"Tag"`
 }
