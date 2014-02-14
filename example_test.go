@@ -13,7 +13,10 @@ import (
 func ExampleService_GetSlideshow() {
 	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshow, err := service.GetSlideshow(29551397, false)
-
+	if err != nil {
+		fmt.Println("Error:")
+		fmt.Println(err)
+	}
 	fmt.Println("ID: ", slideshow.ID)
 	fmt.Println("Title: ", slideshow.Title)
 	fmt.Println("Description: ", slideshow.Description)
@@ -29,7 +32,10 @@ func ExampleService_GetSlideshow() {
 func ExampleService_GetSlideshowsByTag() {
 	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshows, err := service.GetSlideshowsByTag("dishev", false)
-
+	if err != nil {
+		fmt.Println("Error:")
+		fmt.Println(err)
+	}
 	fmt.Println("ID: ", slideshows.Slideshows[0].ID)
 	fmt.Println("Title: ", slideshows.Slideshows[0].Title)
 	fmt.Println("Username: ", slideshows.Slideshows[0].Username)
@@ -42,7 +48,10 @@ func ExampleService_GetSlideshowsByUser() {
 	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshows, err := service.GetSlideshowsByUser("ddishev", false)
 	lastSlideshowIndex := slideshows.Count - 1
-
+	if err != nil {
+		fmt.Println("Error:")
+		fmt.Println(err)
+	}
 	fmt.Println("ID: ", slideshows.Slideshows[lastSlideshowIndex].ID)
 	fmt.Println("Title: ", slideshows.Slideshows[lastSlideshowIndex].Title)
 	fmt.Println("Username: ", slideshows.Slideshows[lastSlideshowIndex].Username)
