@@ -12,19 +12,17 @@ import (
 // we have slideshow object with all the properties.
 func ExampleService_GetSlideshow() {
 	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
-	slideshow, err := service.GetSlideshow(29551397, false)
+	slideshow, err := service.GetSlideshow(30975136, false)
 	if err != nil {
 		fmt.Println("Error:")
 		fmt.Println(err)
 	}
-	fmt.Println("ID: ", slideshow.ID)
-	fmt.Println("Title: ", slideshow.Title)
-	fmt.Println("Description: ", slideshow.Description)
-	fmt.Println("Username: ", slideshow.Username)
+	fmt.Println("ID:", slideshow.ID)
+	fmt.Println("Title:", slideshow.Title)
+	fmt.Println("Username:", slideshow.Username)
 	// Output:
-	// ID: 29551397
-	// Title: Databases
-	// Description: Representing Data Elements, presentation from FMI Databases course.
+	// ID: 30975136
+	// Title: Do not delete!
 	// Username: ddishev
 }
 
@@ -36,9 +34,9 @@ func ExampleService_GetSlideshowsByTag() {
 		fmt.Println("Error:")
 		fmt.Println(err)
 	}
-	fmt.Println("ID: ", slideshows.Slideshows[0].ID)
-	fmt.Println("Title: ", slideshows.Slideshows[0].Title)
-	fmt.Println("Username: ", slideshows.Slideshows[0].Username)
+	fmt.Println("ID:", slideshows.Slideshows[0].ID)
+	fmt.Println("Title:", slideshows.Slideshows[0].Title)
+	fmt.Println("Username:", slideshows.Slideshows[0].Username)
 	// Output:
 	// ID: 30975136
 	// Title: Do not delete!
@@ -52,9 +50,9 @@ func ExampleService_GetSlideshowsByUser() {
 		fmt.Println("Error:")
 		fmt.Println(err)
 	}
-	fmt.Println("ID: ", slideshows.Slideshows[lastSlideshowIndex].ID)
-	fmt.Println("Title: ", slideshows.Slideshows[lastSlideshowIndex].Title)
-	fmt.Println("Username: ", slideshows.Slideshows[lastSlideshowIndex].Username)
+	fmt.Println("ID:", slideshows.Slideshows[lastSlideshowIndex].ID)
+	fmt.Println("Title:", slideshows.Slideshows[lastSlideshowIndex].Title)
+	fmt.Println("Username:", slideshows.Slideshows[lastSlideshowIndex].Username)
 	// Output:
 	// ID: 30975136
 	// Title: Do not delete!
