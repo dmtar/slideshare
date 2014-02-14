@@ -10,8 +10,8 @@ import (
 // After we call the method GetSlideshow with the Slideshow ID and without detailed information
 // if you want detailed information for the slideshow, second argument has to be true, if everything is ok
 // we have slideshow object with all the properties.
-func ExampleGetSlideshow() {
-	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
+func ExampleService_GetSlideshow() {
+	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshow, err := service.GetSlideshow(29551397, false)
 
 	fmt.Println("ID: ", slideshow.ID)
@@ -25,25 +25,9 @@ func ExampleGetSlideshow() {
 	// Username: ddishev
 }
 
-// Same test but with detailed information
-func ExampleGetSlideshow2() {
-	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
-	slideshow, err := service.GetSlideshow(29551397, true)
-
-	fmt.Println("Number of downloads: ", slideshow.NumDownloads)
-	fmt.Println("Number of views: ", slideshow.NumViews)
-	fmt.Println("Number of comments: ", slideshow.NumComments)
-	fmt.Println("Number of slides: ", slideshow.NumSlides)
-	// Output:
-	// Number of downloads: 1
-	// Number of views: 48
-	// Number of comments: 1
-	// Number of slides: 63
-}
-
 // Getting slideshows which have "sql" tag.
-func ExampleGetSlideshowsByTag() {
-	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
+func ExampleService_GetSlideshowsByTag() {
+	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshows, err := service.GetSlideshowsByTag("dishev", false)
 
 	fmt.Println("ID: ", slideshows.Slideshows[0].ID)
@@ -54,8 +38,8 @@ func ExampleGetSlideshowsByTag() {
 	// Title: Do not delete!
 	// Username: ddishev
 }
-func ExampleGetSlideshowsByUser() {
-	service := slideshare.Service{"API_KEY", "SHARED_SECRET"}
+func ExampleService_GetSlideshowsByUser() {
+	service := slideshare.Service{"5Pl6RFlI", "X1lMfjPo"}
 	slideshows, err := service.GetSlideshowsByUser("ddishev", false)
 	lastSlideshowIndex := slideshows.Count - 1
 
